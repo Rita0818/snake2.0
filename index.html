@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可爱贪食蛇</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .game-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .game-area {
+            position: relative;
+        }
+
+        #gameCanvas {
+            border: 2px solid #333;
+            border-radius: 10px;
+        }
+
+        .score-panel {
+            width: 200px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .score-panel h2 {
+            margin: 0 0 15px 0;
+            color: #333;
+            text-align: center;
+        }
+
+        .score-item {
+            margin-bottom: 10px;
+        }
+
+        .crown {
+            color: gold;
+            margin-left: 5px;
+        }
+
+        .difficulty-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .start-button {
+            width: 100%;
+            margin: 15px 0;
+            padding: 12px;
+            font-size: 16px;
+            background: #2196F3;
+        }
+
+        .start-button:hover {
+            background: #1976D2;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .pause-button {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            background: #FF5722;
+        }
+
+        .pause-button:hover {
+            background: #F4511E;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .modal input {
+            margin: 10px 0;
+            padding: 5px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-area">
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+        </div>
+        <div class="score-panel">
+            <h2>游戏信息</h2>
+            <div class="score-item">当前分数: <span id="currentScore">0</span></div>
+            <div class="score-item">最高分数: <span id="highScore">0</span></div>
+            <div class="difficulty-buttons">
+                <button id="slowBtn">慢速模式</button>
+                <button id="mediumBtn">中速模式</button>
+                <button id="fastBtn">快速模式</button>
+            </div>
+            <div class="control-buttons">
+                <button id="startGameBtn" class="start-button">开始游戏</button>
+                <button id="pauseBtn" class="pause-button">暂停游戏</button>
+            </div>
+            <h3>排行榜</h3>
+            <div id="leaderboard"></div>
+        </div>
+    </div>
+
+    <div id="usernameModal" class="modal">
+        <div class="modal-content">
+            <h2>请输入用户名</h2>
+            <input type="text" id="usernameInput" maxlength="10" placeholder="输入用户名（最多10个字符）">
+            <button onclick="confirmUsername()">确认</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
