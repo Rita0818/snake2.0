@@ -291,11 +291,12 @@ function draw() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     // 绘制蛇
-    ctx.fillStyle = '#4CAF50';
     gameState.snake.forEach((segment, index) => {
         if (index === 0) {
-            // 绘制蛇头（带眼睛）
-            ctx.fillStyle = '#2E7D32';
+            // 绘制蛇头（带霓虹效果）
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#0ff';
+            ctx.fillStyle = '#00ffff';
             ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
             
             // 绘制眼睛
@@ -323,26 +324,28 @@ function draw() {
                     break;
             }
         } else {
-            // 绘制蛇身
-            ctx.fillStyle = '#4CAF50';
+            // 绘制蛇身（带霓虹效果）
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#0ff';
+            ctx.fillStyle = '#00ffaa';
             ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
         }
     });
     
-    // 绘制食物（苹果形状）
-    ctx.fillStyle = '#FF0000';
-    ctx.beginPath();
-    ctx.arc(gameState.food.x * gridSize + gridSize/2, gameState.food.y * gridSize + gridSize/2, gridSize/2, 0, Math.PI * 2);
-    ctx.fill();
+    // 绘制食物（像素化能量球）
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = '#f0f';
+    ctx.fillStyle = '#ff00ff';
+    ctx.fillRect(gameState.food.x * gridSize, gameState.food.y * gridSize, gridSize, gridSize);
     
-    // 绘制树叶
-    ctx.fillStyle = '#4CAF50';
-    ctx.beginPath();
-    ctx.ellipse(gameState.food.x * gridSize + gridSize/2, gameState.food.y * gridSize, gridSize/4, gridSize/6, Math.PI/4, 0, Math.PI * 2);
-    ctx.fill();
+    // 绘制能量球内部纹理
+    ctx.fillStyle = '#ff88ff';
+    ctx.fillRect(gameState.food.x * gridSize + 4, gameState.food.y * gridSize + 4, gridSize - 8, gridSize - 8);
     
-    // 绘制障碍物（长方形）
-    ctx.fillStyle = '#757575';
+    // 绘制障碍物（带霓虹效果的像素块）
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = '#f00';
+    ctx.fillStyle = '#ff0066';
     gameState.obstacles.forEach(obstacle => {
         ctx.fillRect(
             obstacle.x * gridSize,
@@ -358,26 +361,29 @@ function draw() {
 
 // 绘制装饰性的花草
 function drawDecorations() {
-    const numDecorations = 8;
+    const numDecorations = 12;
     ctx.save();
     
     for (let i = 0; i < numDecorations; i++) {
         const x = (i * canvas.width / numDecorations) + Math.random() * 20;
-        const y = canvas.height - 20;
+        const y = canvas.height - 10;
         
-        // 绘制草
-        ctx.strokeStyle = '#81C784';
+        // 绘制像素化的电路线
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#0ff';
+        ctx.strokeStyle = '#00ffff';
+        ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(x, y);
-        ctx.quadraticCurveTo(x - 5, y - 15, x - 3, y - 20);
+        ctx.lineTo(x, y - 20 - Math.random() * 20);
         ctx.stroke();
         
-        // 随机添加小花
+        // 随机添加节点
         if (Math.random() > 0.5) {
-            ctx.fillStyle = ['#FF69B4', '#FFB6C1', '#FFA07A'][Math.floor(Math.random() * 3)];
-            ctx.beginPath();
-            ctx.arc(x - 3, y - 20, 3, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#f0f';
+            ctx.fillStyle = '#ff00ff';
+            ctx.fillRect(x - 3, y - 25, 6, 6);
         }
     }
     
